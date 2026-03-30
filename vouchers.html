@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vouchers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    <section id="vouchers">
+        <p class="section-label reveal">Redeemable anytime</p>
+        <h2 class="section-title reveal">Your Gift Vouchers</h2>
+        <div class="vouchers-grid">
+
+            <div class="voucher reveal" id="v1">
+              <div class="voucher-stamp">🎬</div>
+              <div class="voucher-title">Movie Night of Your Choice</div>
+              <div class="voucher-sub">
+                <span>✦ You choose the movie</span>
+                <span>✦ I bring the snacks</span>
+              </div>
+              <button class="voucher-btn" onclick="redeemVoucher('v1')">Redeem</button>
+              <div class="voucher-redeemed">
+                <span style="font-size:2rem">✓</span>
+                Redeemed with love
+              </div>
+            </div>
+          
+            <div class="voucher reveal" id="v2">
+              <div class="voucher-stamp">🍽</div>
+              <div class="voucher-title">Pepper Soup Date, My Treat</div>
+              <div class="voucher-sub">
+                <span>✦ No complaints about the bill</span>
+              </div>
+              <button class="voucher-btn" onclick="redeemVoucher('v2')">Redeem</button>
+              <div class="voucher-redeemed">
+                <span style="font-size:2rem">✓</span>
+                Redeemed with love
+              </div>
+            </div>
+          
+            <div class="voucher reveal" id="v3">
+              <div class="voucher-stamp">🧘🏽‍♀️</div>
+              <div class="voucher-title">Stress-Free Day</div>
+              <div class="voucher-sub">
+                <span>✦ No arguments</span>
+                <span>✦ Full attention</span>
+                <span>✦ Massage included 😌</span>
+              </div>
+              <button class="voucher-btn" onclick="redeemVoucher('v3')">Redeem</button>
+              <div class="voucher-redeemed">
+                <span style="font-size:2rem">✓</span>
+                Redeemed with love
+              </div>
+            </div>
+          
+          </div>
+      </section>
+    <script>
+        function redeemVoucher(id) {
+        const v = document.getElementById(id);
+        v.classList.add('redeemed');
+        launchConfetti();
+        }
+
+        function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#C9A84C','#6B1E2E','#FAF3E8','#E8CB80','#4A1020'];
+  const pieces = Array.from({length:120},()=>({
+    x: Math.random()*canvas.width,
+    y: -20,
+    r: Math.random()*6+3,
+    d: Math.random()*3+1,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    tilt: Math.random()*10-5,
+    tiltAngle: 0,
+    tiltSpeed: Math.random()*0.1+0.05,
+  }));
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.ellipse(p.x, p.y, p.r, p.r*0.6, p.tilt, 0, Math.PI*2);
+      ctx.fill();
+      p.y += p.d+1;
+      p.x += Math.sin(frame*0.02)*1.5;
+      p.tiltAngle += p.tiltSpeed;
+      p.tilt = Math.sin(p.tiltAngle)*12;
+    });
+    frame++;
+    if(frame < 180) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+    </script>
+
+</body>
+</html>

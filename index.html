@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Handsome 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+
+
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Navigation">
+  <a href="#hero" title="Home"></a>
+  <a href="#menu" title="Menu"></a>
+  <a href="#memory" title="Memories"></a>
+  <a href="#songs" title="Songs"></a>
+  <a href="#vouchers" title="Vouchers"></a>
+  <a href="#dates" title="Dates"></a>
+  <a href="#gifts" title="Gifts"></a>
+  <a href="#message" title="Message"></a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <h2 class="king">A KING WAS BORN😂👑</h2>
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <div class="hero-photo-frame">
+      <div class="photo-placeholder">
+        <!-- <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        Add your photo -->
+        <img src="daea1a20ec5c3f0513011a13ac8ac44a.jpg" alt="bd boy" class="bd-man">
+      </div>
+      <div class="photo-corner tl"></div>
+      <div class="photo-corner tr"></div>
+      <div class="photo-corner bl"></div>
+      <div class="photo-corner br"></div>
+    </div>
+
+    <div>
+      <div class="hero-tag">Made with love · Just for you</div>
+      <h1 class="hero-title">Hi, <em>Handsome.</em></h1>
+    </div>
+
+    <p class="hero-body">
+      Welcome to your little corner of the internet.<br><br>
+      I made this because <strong>five years with you</strong> deserves more than just a cake and candles.
+      You're soft. You're attentive. You're annoyingly fine.
+      And you love me in ways that make me feel chosen every day.<br><br>
+      So this? This is me <strong>choosing you back.</strong> Loudly. Intentionally. Playfully.
+    </p>
+
+    <p class="hero-closing">Happy Birthday, my favorite person. 🎂</p>
+
+    <a href="menu.html">
+    <div class="scroll-hint">
+      <p class="actn-btn">Shall we get to the good part?</p>
+    </div>
+  </a>
+    <!-- <div class="scroll-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+      explore
+    </div> -->
+  </div>
+</section>
+
+<!-- ── MENU ── -->
+
+<!-- ── MEMORY ── -->
+
+<!-- ── SONGS ── -->
+
+
+<!-- ── VOUCHERS ── -->
+
+
+<!-- ── DATE IDEAS ── -->
+
+
+<!-- ── GIFTS ── -->
+
+
+<!-- ── MESSAGE ── -->
+
+
+<footer>
+  <p>Made with <span class="footer-heart">♥</span> especially for you · Happy Birthday, My man.</p>
+</footer>
+
+<script>
+// ── A-Z DATE IDEAS ──
+
+
+// ── GIFTS ──
+
+// ── VOUCHERS ──
+
+// ── CONFETTI ──
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── NAV DOTS ──
+const sections = document.querySelectorAll('section[id]');
+const dots = document.querySelectorAll('.nav-dots a');
+const dotObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      dots.forEach(d => d.classList.remove('active'));
+      const id = e.target.id;
+      const dot = document.querySelector(`.nav-dots a[href="#${id}"]`);
+      if(dot) dot.classList.add('active');
+    }
+  });
+}, { threshold: 0.5 });
+sections.forEach(s => dotObserver.observe(s));
+</script>
+</body>
+</html>

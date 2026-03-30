@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dates</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<section id="dates">
+    <p class="section-label reveal">Adventures for two</p>
+    <h2 class="section-title reveal">A–Z Date Ideas</h2>
+    <div class="az-grid" id="az-grid"></div>
+  </section>
+<script>
+const dateIdeas = [
+  ['A','Arcade date'],['B','Beach day'],['C','Cinema night'],
+  ['D','Drive & talk'],['E','Eat at a new restaurant'],['F','Food tasting challenge'],
+  ['G','Game night'],['H','Hiking'],['I','Ice cream run'],
+  ['J','Journaling about our future'],['K','Karaoke'],['L','Late night car talks'],
+  ['M','Museum visit'],['N','Netflix marathon'],['O','Outdoor picnic'],
+  ['P','Photoshoot date'],['Q','Quiz night'],['R','Road trip'],
+  ['S','Staycation'],['T','Try a new hobby together'],['U','Unplugged day (no phones)'],
+  ['V','Volunteer together'],['W','Wine tasting'],['X','"Xtra spontaneous" surprise date'],
+  ['Y','You choose everything'],['Z','Zoo date'],
+];
+const azGrid = document.getElementById('az-grid');
+dateIdeas.forEach(([l, idea]) => {
+  const d = document.createElement('div');
+  d.className = 'az-item reveal';
+  d.innerHTML = `<div class="az-letter">${l}</div><div class="az-idea">${idea}</div>`;
+  azGrid.appendChild(d);
+});
+</script>
+</body>
+</html>

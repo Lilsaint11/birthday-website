@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>25 Reasonds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <section id="reasons">
+        <p class="section-label reveal">💌 With all my heart</p>
+        <h2 class="section-title reveal">25 Reasons I Love You</h2>
+      
+        <div class="reasons-grid" id="reasons-grid"></div>
+      
+        <p class="reasons-closing reveal">And even after over five years, I'm still discovering new reasons.</p>
+      </section>
+      
+      <script>
+        const reasons = [
+          "I love how gentle you are with my feelings.",
+          "I love that you actually listen, not just hear me.",
+          "I love how you reassure me without making me feel silly for needing it.",
+          "I love that you pay attention to the smallest details about me.",
+          "I love how playful you are, you make life lighter.",
+          "I love that you choose me every day, not just when it's convenient.",
+          "I love how safe I feel around you.",
+          "I love how intentional you are about us.",
+          "I love the way you look at me when I'm talking.",
+          "I love that you care deeply, even when you pretend you don't.",
+          "I love how you try, especially when things aren't easy.",
+          "I love how you handle things quietly but strongly.",
+          "I love that you're soft without being weak.",
+          "I love how protective you are of my heart.",
+          "I love that you make me feel chosen.",
+          "I love how you show up, consistently.",
+          "I love that you don't just say things, you do them.",
+          "I love how you calm me down when my mind is racing.",
+          "I love that you care about our future.",
+          "I love how comfortable silence is with you.",
+          "I love the way you laugh. Your dentition and dimples gosh!",
+          "I love how you serve with love, not obligation.",
+          "I love that you're my peace, not my stress.",
+          "I love the man you are becoming.",
+          "I love you, not just for what you do for me, but for who you are at your core.",
+        ];
+      
+        const grid = document.getElementById('reasons-grid');
+        reasons.forEach((r, i) => {
+          const card = document.createElement('div');
+          card.className = 'reason-card reveal';
+          card.innerHTML = `
+            <div class="reason-num">${String(i + 1).padStart(2, '0')}</div>
+            <div class="reason-text">${r}</div>
+          `;
+          grid.appendChild(card);
+        });
+      </script>
+</body>
+</html>

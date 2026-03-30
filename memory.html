@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Lane</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #memory {
+      background: var(--burgundy-deep);
+      padding: 80px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #memory .section-label { color: var(--gold-light); }
+    #memory .section-title { color: var(--cream); }
+
+    /* ── Intro prose ── */
+    .memory-intro {
+      max-width: 540px;
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .memory-intro p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(250,243,232,0.7);
+      line-height: 2;
+    }
+
+    .memory-intro .intro-highlight {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      margin-top: 20px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Chapter cards ── */
+    .memory-chapters {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 820px;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      .memory-chapters { grid-template-columns: 1fr; }
+    }
+
+    .chapter-card {
+      background: linear-gradient(160deg, #3a1525 0%, #1e0b14 100%);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .chapter-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+
+    .chapter-card-top {
+      padding: 28px 24px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .chapter-emoji {
+      font-size: 2rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .chapter-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: rgba(201,168,76,0.5);
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--cream);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .chapter-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: rgba(201,168,76,0.55);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .chapter-arrow {
+      margin-left: auto;
+      color: rgba(201,168,76,0.3);
+      font-size: 1.3rem;
+      align-self: center;
+      transition: transform 0.3s, color 0.3s;
+      flex-shrink: 0;
+    }
+
+    .chapter-card.open .chapter-arrow {
+      transform: rotate(90deg);
+      color: var(--gold);
+    }
+
+    /* ── Photo grid inside card ── */
+    .chapter-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 0 12px 12px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.55s ease, padding 0.3s;
+    }
+    .chapter-card.open .chapter-gallery {
+  max-height: none;
+  padding: 0 12px 16px;
+}
+
+    .chapter-photo {
+      aspect-ratio: 1;
+      background: linear-gradient(160deg, #2a0f1c 0%, #150810 100%);
+      border-radius: 8px;
+      border: 1px solid rgba(201,168,76,0.15);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: rgba(201,168,76,0.25);
+      transition: border-color 0.3s;
+    }
+
+    .chapter-photo:hover { border-color: rgba(201,168,76,0.5); }
+
+    .chapter-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .chapter-photo-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(20,8,16,0.88));
+      padding: 16px 6px 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.7rem;
+      color: var(--gold-light);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .chapter-photo:hover .chapter-photo-caption { opacity: 1; }
+
+    /* ── Closing note ── */
+    .memory-note {
+      margin-top: 48px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(250,243,232,0.5);
+      text-align: center;
+      max-width: 480px;
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding-top: 32px;
+    }
+
+    /* ── Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: fadeUp 0.65s ease forwards;
+    }
+    .section-label.reveal  { animation-delay: 0.05s; }
+    .section-title.reveal  { animation-delay: 0.15s; }
+    .memory-intro.reveal   { animation-delay: 0.25s; }
+    .chapter-card.reveal:nth-child(1) { animation-delay: 0.35s; }
+    .chapter-card.reveal:nth-child(2) { animation-delay: 0.45s; }
+    .chapter-card.reveal:nth-child(3) { animation-delay: 0.55s; }
+    .chapter-card.reveal:nth-child(4) { animation-delay: 0.65s; }
+    .memory-note.reveal { animation-delay: 0.75s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .photo-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 16, 0.96);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.photo-modal.open { display: block; }
+
+.modal-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+
+.modal-close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold-light);
+  font-size: 1.1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.modal-close:hover { background: rgba(201,168,76,0.3); }
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--cream);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 500px) {
+  .modal-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.modal-photo {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.15);
+}
+
+.modal-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.modal-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(20,8,16,0.88));
+  padding: 20px 8px 8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--gold-light);
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+
+  <section id="memory">
+    <p class="section-label reveal">📸 Our Story, In Pieces</p>
+    <h2 class="section-title reveal">Down Memory Lane</h2>
+
+    <div class="memory-intro reveal">
+      <p>
+        Before you were mine…<br>
+        Before we met…<br>
+        Before five years of inside jokes and late-night conversations…<br><br>
+        You were just a boy growing into the man I now love.<br><br>
+        And somehow, our timelines crossed at the perfect time.<br><br>
+        This is our story,<br>
+        The little you. The grown you.<br>
+        The <em>us</em> that happened in between.<br>
+        And the future we're still writing.
+      </p>
+      <span class="intro-highlight">↓ Open each chapter</span>
+    </div>
+
+    <div class="memory-chapters">
+
+      <!-- Chapter 1 -->
+      <div class="chapter-card reveal" data-index="0"onclick="toggleChapter(this)">
+        <div class="chapter-card-top">
+          <div class="chapter-emoji">🧒🏽</div>
+          <div>
+            <div class="chapter-num">Chapter 01</div>
+            <div class="chapter-title">Before He Was Mine</div>
+            <div class="chapter-sub">The childhood years</div>
+          </div>
+          <span class="chapter-arrow">›</span>
+        </div>
+      
+      </div>
+
+      <!-- Chapter 2 -->
+      <div class="chapter-card reveal" data-index="1" onclick="toggleChapter(this)">
+        <div class="chapter-card-top">
+          <div class="chapter-emoji">🖤</div>
+          <div>
+            <div class="chapter-num">Chapter 02</div>
+            <div class="chapter-title">The Man I Brag About</div>
+            <div class="chapter-sub">Him, grown & glowing</div>
+          </div>
+          <span class="chapter-arrow">›</span>
+        </div>
+        
+      </div>
+
+      <!-- Chapter 3 -->
+      <div class="chapter-card reveal" data-index="2" onclick="toggleChapter(this)">
+        <div class="chapter-card-top">
+          <div class="chapter-emoji">💑</div>
+          <div>
+            <div class="chapter-num">Chapter 03</div>
+            <div class="chapter-title">My Favorite 'Us' Moments</div>
+            <div class="chapter-sub">Together, always</div>
+          </div>
+          <span class="chapter-arrow">›</span>
+        </div>
+        
+      </div>
+
+      <!-- Chapter 4 -->
+      <div class="chapter-card reveal" data-index="3" onclick="toggleChapter(this)">
+        <div class="chapter-card-top">
+          <div class="chapter-emoji">🌅</div>
+          <div>
+            <div class="chapter-num">Chapter 04</div>
+            <div class="chapter-title">Where We're Headed</div>
+            <div class="chapter-sub">The future we're writing</div>
+          </div>
+          <span class="chapter-arrow">›</span>
+        </div>
+   
+      </div>
+
+    </div>
+
+    <p class="memory-note reveal">Every photo is a moment I never want to forget.</p>
+  </section>
+
+  <!-- Fullscreen Modal -->
+<div class="photo-modal" id="photoModal" onclick="closeModal()">
+  <div class="modal-inner" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-grid" id="modalGrid"></div>
+  </div>
+</div>
+
+  <script>
+ const chapters = {
+  0: {
+    title: '🧒🏽 Before He Was Mine',
+    photos: [
+      { src: 'image1/7f6852ea129ce7b99ac0c17b9f74cc5a.jpg', caption: 'Little him 🤍' },
+      { src: 'image1/6460b4bc7202a757cbe2f1daed01f650.jpg', caption: 'Big swag' },
+      { src: 'image1/97066f6db76b90a26c9f62281830b182.jpg', caption: 'Aint we cute? 😊' },
+      { src: 'image1/434702606e74feb37e6cd251fcb5d432.jpg', caption: 'Little him 🤍' },
+      { src: 'image1/b43ba2aa9de482a3eaf2159d5f2b4dfa.jpg', caption: 'Big boy' },
+      { src: 'image1/b083b68ab20968f46a4ffb411392a51d.jpg', caption: 'Growing up ✨' },
+    ]
+  },
+  1: {
+    title: '🖤 The Man I Brag About',
+    photos: [
+    { src: 'image2/2d5fb335b8349cac0d2b7560b5d0b983.jpg', caption: 'Billions💵' },
+    { src: 'image2/34d1ef0979c7a50933f0f57022b83b10.jpg', caption: 'Money calls😌' },
+    { src: 'image2/36bddf67b352e1b81abf4e23a2b68a9d.jpg', caption: 'Our cute smile😁' },
+    { src: 'image2/5129076e52993f6f9c9c75747340d84d.jpg', caption: 'Biggest!!' },
+    { src: 'image2/a7f65eb5b4f8b8487992b8bb2826e2f3.jpg', caption: 'Always that smile' },
+    { src: 'image2/acebe5e9197f58a68b3d70b095dcfdcf.jpg', caption: 'Face card never declines' },
+    ]
+  },
+  2: {
+    title: '💑 My Favorite Us Moments',
+    photos: [
+    { src: 'image3/dbf071b587e83c19691e950e84c4fc3f.jpg', caption: 'Mine 💛' },
+      { src: 'image3/7b08351ceb6786fdc2969d3113f28e4a.jpg', caption: 'Forever more 🔥' },
+      { src: 'image3/2bf353a6dd7795c59bf96753e51a8e3d.jpg', caption: 'Still choosing you' },
+      { src: 'image3/27ddad344f471f1a6d1a1fb12bc1e094.jpg', caption: 'More to come ' },
+      { src: 'image3/d35a2c85794f3a9603648dc00a2d4a9a.jpg', caption: 'Still choosing you' },
+      { src: 'image3/e1b7db5b8ae853a9711f2d936ac0bce8.jpg', caption: 'More to come 💛' },
+     
+    ]
+  },
+  3: {
+    title: '🌅 Where We\'re Headed',
+    photos: [
+      { src: 'image4/0fcbe938-bc2f-4fd1-87be-23c1160ada15.jpg', caption: 'Us ✨' },
+      { src: 'image4/2ac30e4d-10b2-40e8-9906-13ef58c7eab8.jpg', caption: 'Growing Spritually 🤍' },
+      { src: 'image4/2e6991f0-2593-46cf-8d67-a134f8fbd8c6.jpg', caption: 'Views🌟' },
+      { src: 'image4/04f31075-322d-4e1e-94d8-26b6cffbe5b6.jpg', caption: 'My muse✨' },
+      { src: 'image4/6f51b67d-47ab-40fd-a604-dea5504979e2.jpg', caption: 'Vacations' },
+      { src: 'image4/7db8603b-e30e-4ac0-9b37-5730d298cd85.jpg', caption: 'Picturessss 🌟' },
+      { src: 'image4/7e319605-3425-4feb-a360-aec969fe9d03.jpg', caption: 'More vacaions' },
+      { src: 'image4/30a0eff4-7d49-4bf7-be62-0fb32314eaf6.jpg', caption: 'Goals🤍' },
+      { src: 'image4/81bee0eb-81e4-45c3-828f-6fcefd881aa9.jpg', caption: 'Family🌟' },
+      { src: 'image4/384a659b-caa8-44db-b6c2-4cbdf0127555.jpg', caption: 'New beginnings ✨' },
+      { src: 'image4/396a6e60-db76-4a2f-84a6-f03af63ed026.jpg', caption: 'Catching flights' },
+      { src: 'image4/5620de76-a074-4db0-8e5b-339e571620e0.jpg', caption: 'Beach side views 🌟' },
+      { src: 'image4/36448e5c-e5f9-4ee3-a5fc-5cbb9b73b61f.jpg', caption: 'Exploring the world' },
+      { src: 'image4/56503444-7d9f-4bd3-8ac5-aa9202b332c2.jpg', caption: 'Us soon' },
+      { src: 'image4/88071864-ac32-489e-bbf5-5ad0a151179c.jpg', caption: 'Maintaining glow ✨' },
+      { src: 'image4/ba4d6c68-d9ca-4ca3-80b8-c388fa9d256f.jpg', caption: 'We outsideeee' },
+      { src: 'image4/cb1ff04c-8c85-4f1f-b339-de02f1e6df12.jpg', caption: 'Pure joy🤍' },
+      { src: 'image4/ce118e69-94b1-4d9b-aa4e-a10acd5f70f1.jpg', caption: 'Living 🌟' },
+      { src: 'image4/e1e6c208-cd76-4303-bf62-1c7a731044fd.jpg', caption: 'Cute 💅' },
+      { src: 'image4/f2ff8a2b-577f-4688-8427-d5326c556169.jpg', caption: 'Fitness goals' },
+    ]
+  },
+};
+
+function toggleChapter(card) {
+  const index = card.getAttribute('data-index');
+  const chapter = chapters[index];
+  document.getElementById('modalTitle').textContent = chapter.title;
+  const grid = document.getElementById('modalGrid');
+  grid.innerHTML = chapter.photos.map(p => `
+    <div class="modal-photo">
+      <img src="${p.src}" alt="" onerror="this.parentElement.style.display='none'" />
+      <div class="modal-caption">${p.caption}</div>
+    </div>
+  `).join('');
+  document.getElementById('photoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('photoModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+  </script>
+
+</body>
+</html>

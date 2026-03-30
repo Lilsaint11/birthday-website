@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Gifts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Gift image inside reveal ── */
+    .gift-reveal-inner {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .gift-img-wrap {
+      flex-shrink: 0;
+      width: 110px;
+      height: 140px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: rgba(0,0,0,0.3);
+    }
+
+    .gift-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      object-position: top;
+    }
+
+    .gift-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      opacity: 0.4;
+    }
+
+    .gift-reveal-text {
+      flex: 1;
+    }
+
+    /* ── Override reveal panel to fit image ── */
+    .gift-reveal {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .5s ease, padding .3s;
+      padding: 0 0 0 68px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .gift-reveal.open {
+      max-height: 600px;
+      padding: 20px 20px 20px 20px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .gift-reveal p {
+      font-size: 0.9rem;
+      color: rgba(250,243,232,0.75);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .gift-reveal .important {
+      font-size: 0.8rem;
+      color: var(--gold-light, #E8CB80);
+      font-style: italic;
+    }
+
+    @media (max-width: 480px) {
+      .gift-reveal-inner { flex-direction: column; }
+      .gift-img-wrap { width: 100%; height: 300px; }
+    }
+  </style>
+</head>
+<body>
+  <section id="gifts">
+    <p class="section-label reveal">With all my heart</p>
+    <h2 class="section-title reveal">Things I Got Because I'm Obsessed With You</h2>
+    <p class="gifts-intro reveal">Click each one 👇</p>
+
+    <div class="gifts-row" id="gifts-row"></div>
+
+    <div class="gifts-closing reveal">
+      <p>"I didn't just buy you gifts. I bought outfits for our future. I bought reminders that I listen. And I bought a perfume so you can smell like the man I brag about."</p>
+    </div>
+  </section>
+
+  <script>
+    const gifts = [
+      {
+        icon: '🌊', name: 'Beach Shirt', teaser: 'Vacation Energy',
+        img: 'beach-shirt.jpg', // ← replace with your image path
+        msg: 'Sir… this is for when you\'re looking expensive on vacation. I got this because I fully plan on staring at you while pretending I\'m looking at the ocean. It\'s giving "main character on a soft life getaway." It\'s giving "that\'s my man."',
+        note: 'We are manifesting stress-free, sun-kissed, no-alarm mornings.'
+      },
+      {
+        icon: '🏖', name: 'Beach Shorts', teaser: 'Pool Fine Boy',
+        img: 'beach-shorts.jpg',
+        msg: 'These are specifically for when you\'re about to act fine by the pool. You\'re playful, you\'re soft, you\'re attentive… but you\'re also lowkey fine and we need outfits that support that agenda.',
+        note: 'I deserve premium views too.'
+      },
+      {
+        icon: '🌴', name: 'Jungle Hat', teaser: 'I Was Listening',
+        img: 'jungle-hat.jpg',
+        msg: 'You mentioned it once. Once. And I stored it in my mental "future wife behavior" folder. You probably forgot. I didn\'t.',
+        note: 'When you talk, I listen. And I will always be that girl.'
+      },
+      {
+        icon: '🖤', name: 'Black Armless Top', teaser: 'Main Character Mode',
+        img: 'black-armless.jpg',
+        msg: 'This is for gym days. Or "let me just step out small" days. Black looks strong on you. Calm. Confident. Dangerous (just a little).',
+        note: 'I like when you look good… but I love that I\'m the one going home with you.'
+      },
+      {
+        icon: '🖤', name: 'Black Round Neck Tee', teaser: 'Clean & Classic',
+        img: 'black-tee.jpg',
+        msg: 'Clean. Simple. Classic. Just like your love for me, steady and intentional. This is the kind of tee you\'ll throw on without thinking… the same way you show up for me without hesitation.',
+        note: 'Staples matter. And you? You\'re my staple.'
+      },
+      {
+        icon: '🌫', name: 'Bourbon Lattafa Perfume', teaser: 'Grown Man Scent',
+        img: 'perfume.jpg',
+        msg: 'Warm. Deep. Addictive. Basically you in a bottle. I need you walking into rooms and people wondering why it suddenly smells like "grown man energy."',
+        note: 'Scent is memory. And now you\'ll literally smell like my good decision.'
+      },
+    ];
+
+    const giftsRow = document.getElementById('gifts-row');
+
+    gifts.forEach((g, i) => {
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
+        <button class="gift-btn reveal" onclick="toggleGift(${i})" id="gbtn-${i}">
+          <div class="gift-icon-circle">${g.icon}</div>
+          <div class="gift-label">
+            <div class="gift-name">${g.name}</div>
+            <div class="gift-teaser">Click for ${g.teaser}</div>
+          </div>
+          <span class="gift-arrow" id="garrow-${i}">›</span>
+        </button>
+        <div class="gift-reveal" id="grev-${i}">
+          <div class="gift-reveal-inner">
+            <div class="gift-img-wrap">
+              <img src="${g.img}" alt="${g.name}" class="gift-main-img"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+              <div class="gift-img-placeholder" style="display:none">${g.icon}</div>
+            </div>
+            <div class="gift-reveal-text">
+              <p>${g.msg}</p>
+              <p class="important">✦ Important because: ${g.note}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      giftsRow.appendChild(wrap);
+    });
+
+    function toggleGift(i) {
+      const rev = document.getElementById('grev-' + i);
+      const arrow = document.getElementById('garrow-' + i);
+      const isOpen = rev.classList.contains('open');
+      document.querySelectorAll('.gift-reveal').forEach(r => r.classList.remove('open'));
+      document.querySelectorAll('.gift-arrow').forEach(a => { a.style.transform = ''; a.style.color = ''; });
+      if (!isOpen) {
+        rev.classList.add('open');
+        arrow.style.transform = 'rotate(90deg)';
+        arrow.style.color = 'var(--gold)';
+      }
+    }
+  </script>
+</body>
+</html>
